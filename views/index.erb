@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="/assets/css/count.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+<form action="/counter" method="post">
+  <input type="submit" value="カウンター作成">
+</form>
+
+<h2><%= @title %></h2>
+<form action="/title" method="post" class="title">
+  <input type="text" placeholder="見出しを入力してください" name="title">
+  <input type="submit" value="変更">
+</form>
+<h1 class="number"><%= @number %></h1>
+
+<input class="plus" type="submit" value="+">
+
+
+<form action="/minus" method="post">
+  <input type="submit" value="-">
+</form>
+
+<form action="/multiply" method="post">
+  <input type="submit" value="×2">
+</form>
+
+<form action="/divide" method="post">
+  <input type="submit" value="÷2">
+</form>
+
+<form action="/clear" method="post">
+  <input type="submit" value="clear">
+</form>
+
+<% @counts.each do |count| %>
+<div class="wrapper">
+<h1><%= count.number %></h1>
+
+<form action="/plus/<%= count.id %>" method="post">
+  <input type="submit" value="+">
+</form>
+</div>
+<% end %>
+
+<script>
+  window.onload = function(){
+    $(".plus").click(function(){
+      var num = Number($(".number").text());
+      $.ajax('/plus',{
+        type: 'post'
+      })
+      .done(function(){
+        num = num + 1;
+        $(".number").html(num);
+      })
+    })
+  }
+</script>
+
+
+</body>
+</html>
